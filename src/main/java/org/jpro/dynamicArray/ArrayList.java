@@ -23,6 +23,7 @@ public class ArrayList {
     public ArrayList() {
         this(DEFAULT_CAPACITY);
     }
+
     /**
      * 清除所有元素
      */
