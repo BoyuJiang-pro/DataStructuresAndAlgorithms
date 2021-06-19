@@ -1,16 +1,19 @@
 package org.jpro.dynamicArray;
 
+import org.jpro.pojo.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ArrayListTest {
 
-    private ArrayList arrayList;
+    private ArrayList<Integer> arrayList;
+    private ArrayList<Person> personArrayList;
 
     @Before
     public void setUp() {
         arrayList = initArrayList();
+        personArrayList = initPersonArrayList();
     }
 
     @Test
@@ -22,7 +25,7 @@ public class ArrayListTest {
 
     @Test
     public void size() {
-        Assert.assertEquals(0, new ArrayList().size());
+        Assert.assertEquals(0, new ArrayList<Integer>().size());
         Assert.assertEquals(7, arrayList.size());
         arrayList.add(88);
         Assert.assertEquals(8, arrayList.size());
@@ -32,7 +35,7 @@ public class ArrayListTest {
 
     @Test
     public void isEmpty() {
-        Assert.assertTrue(new ArrayList().isEmpty());
+        Assert.assertTrue(new ArrayList<Integer>().isEmpty());
         Assert.assertFalse(arrayList.isEmpty());
     }
 
@@ -46,17 +49,19 @@ public class ArrayListTest {
     public void add() {
         arrayList.add(88);
         arrayList.add(99);
-        Assert.assertEquals(88, arrayList.get(7));
-        Assert.assertEquals(99, arrayList.get(8));
+        Assert.assertEquals(88, arrayList.get(7).intValue());
+        Assert.assertEquals(99, arrayList.get(8).intValue());
         arrayList.add(100);
         arrayList.add(200);
         arrayList.add(300);
+        personArrayList.add(new Person("lili", 21));
+        personArrayList.add(new Person("lulu", 12));
     }
 
     @Test
     public void get() {
-        Assert.assertEquals(11, arrayList.get(0));
-        Assert.assertEquals(77, arrayList.get(6));
+        Assert.assertEquals(11, arrayList.get(0).intValue());
+        Assert.assertEquals(77, arrayList.get(6).intValue());
         try {
             arrayList.get(7);
         } catch (IndexOutOfBoundsException e) {
@@ -74,18 +79,18 @@ public class ArrayListTest {
     @Test
     public void set() {
         arrayList.set(0, 1);
-        Assert.assertEquals(1, arrayList.get(0));
+        Assert.assertEquals(1, arrayList.get(0).intValue());
         arrayList.set(6, 7);
-        Assert.assertEquals(7, arrayList.get(6));
+        Assert.assertEquals(7, arrayList.get(6).intValue());
         Assert.assertEquals(7, arrayList.size());
     }
 
     @Test
     public void testAdd() {
         arrayList.add(0, 88);
-        Assert.assertEquals(88, arrayList.get(0));
-        Assert.assertEquals(11, arrayList.get(1));
-        Assert.assertEquals(77, arrayList.get(7));
+        Assert.assertEquals(88, arrayList.get(0).intValue());
+        Assert.assertEquals(11, arrayList.get(1).intValue());
+        Assert.assertEquals(77, arrayList.get(7).intValue());
         try {
             arrayList.add(10, 100);
         } catch (IndexOutOfBoundsException e ) {
@@ -110,10 +115,12 @@ public class ArrayListTest {
     public void indexOf() {
         Assert.assertEquals(0 ,arrayList.indexOf(11));
         Assert.assertEquals(-1, arrayList.indexOf(0));
+        Assert.assertEquals(0, personArrayList.indexOf(new Person("jack", 11)));
+        Assert.assertEquals(-1, personArrayList.indexOf(new Person("jack", 22)));
     }
 
-    private ArrayList initArrayList() {
-        ArrayList arrayList = new ArrayList();
+    private ArrayList<Integer> initArrayList() {
+        ArrayList<Integer> arrayList = new ArrayList<>();
         arrayList.add(11);
         arrayList.add(22);
         arrayList.add(33);
@@ -124,8 +131,16 @@ public class ArrayListTest {
         return arrayList;
     }
 
+    private ArrayList<Person> initPersonArrayList() {
+        ArrayList<Person> personArrayList = new ArrayList<>();
+        personArrayList.add(new Person("jack", 11));
+        personArrayList.add(new Person("tom", 1));
+        return personArrayList;
+    }
+
     @Test
     public void main() {
-        System.out.println(arrayList.toString());
+        System.out.println(arrayList);
+        System.out.println(personArrayList);
     }
 }

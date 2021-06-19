@@ -3,7 +3,7 @@ package org.jpro.dynamicArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ArrayList {
+public class ArrayList<E> {
 
     private static final Logger logger = LoggerFactory.getLogger(ArrayList.class);
 
@@ -18,11 +18,11 @@ public class ArrayList {
     /**
      * 所有的元素
      */
-    private int[] elements;
+    private E[] elements;
 
     public ArrayList(int capacity) {
-        capacity =  capacity < DEFAULT_CAPACITY ? DEFAULT_CAPACITY : capacity;
-        elements = new int[capacity];
+        capacity = Math.max(DEFAULT_CAPACITY, capacity);
+        elements = (E[]) new Object[capacity];
     }
 
     public ArrayList() {
@@ -33,6 +33,9 @@ public class ArrayList {
      * 清除所有元素
      */
     public void clear() {
+        for(int i = 0; i <size; i++) {
+            elements[i] = null;
+        }
         size = 0;
     }
 
@@ -57,7 +60,7 @@ public class ArrayList {
      * @param element
      * @return
      */
-    public boolean contains(int element) {
+    public boolean contains(E element) {
         return indexOf(element) != ELEMENT_NOT_FOUND;
     }
 
@@ -65,7 +68,7 @@ public class ArrayList {
      * 添加到元素尾部
      * @param element
      */
-    public void add(int  element) {
+    public void add(E  element) {
         add(size, element);
     }
 
@@ -74,7 +77,7 @@ public class ArrayList {
      * @param index
      * @return
      */
-    public int get(int index) {
+    public E get(int index) {
         rangeCheck(index);
         return elements[index];
     }
@@ -85,9 +88,9 @@ public class ArrayList {
      * @param element
      * @return
      */
-    public int set(int index, int element) {
+    public E set(int index, E element) {
         rangeCheck(index);
-        int old = elements[index];
+        E old = elements[index];
         elements[index] = element;
         return old;
     }
@@ -97,7 +100,7 @@ public class ArrayList {
      * @param index
      * @param element
      */
-    public void add (int index, int element) {
+    public void add (int index, E element) {
         rangeCheckOfAdd(index);
         ensureCapacity(size + 1);
         for (int i = size; i > index; i--) {
@@ -113,7 +116,7 @@ public class ArrayList {
             return;
         }
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-        int[] newElements = new int[newCapacity];
+        E[] newElements = (E[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
             newElements[i] = elements[i];
         }
@@ -127,13 +130,13 @@ public class ArrayList {
      * @param index
      * @return
      */
-    public int remove(int index) {
+    public E remove(int index) {
         rangeCheck(index);
-        int old = elements[index];
+        E old = elements[index];
         for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements[i];
         }
-        size--;
+        elements[--size] = null;
         return old;
     }
 
@@ -142,10 +145,18 @@ public class ArrayList {
      * @param element
      * @return
      */
-    public int indexOf(int element) {
-        for (int i = 0; i < size; i++) {
-            if (elements[i] == element) {
-                return i;
+    public int indexOf(E element) {
+        if (element == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (element.equals(elements[i])) {
+                    return i;
+                }
             }
         }
         return ELEMENT_NOT_FOUND;
