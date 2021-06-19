@@ -48,6 +48,9 @@ public class ArrayListTest {
         arrayList.add(99);
         Assert.assertEquals(88, arrayList.get(7));
         Assert.assertEquals(99, arrayList.get(8));
+        arrayList.add(100);
+        arrayList.add(200);
+        arrayList.add(300);
     }
 
     @Test
@@ -74,6 +77,7 @@ public class ArrayListTest {
         Assert.assertEquals(1, arrayList.get(0));
         arrayList.set(6, 7);
         Assert.assertEquals(7, arrayList.get(6));
+        Assert.assertEquals(7, arrayList.size());
     }
 
     @Test

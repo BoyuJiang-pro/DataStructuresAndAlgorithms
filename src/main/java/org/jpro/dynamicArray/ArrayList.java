@@ -1,6 +1,11 @@
 package org.jpro.dynamicArray;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ArrayList {
+
+    private static final Logger logger = LoggerFactory.getLogger(ArrayList.class);
 
     private static final int DEFAULT_CAPACITY = 10;
     private static final int ELEMENT_NOT_FOUND = -1;
@@ -94,12 +99,28 @@ public class ArrayList {
      */
     public void add (int index, int element) {
         rangeCheckOfAdd(index);
+        ensureCapacity(size + 1);
         for (int i = size; i > index; i--) {
             elements[i] = elements[i - 1];
         }
         elements[index] = element;
         size++;
     }
+
+    private void ensureCapacity(int capacity) {
+        int oldCapacity = elements.length;
+        if (oldCapacity >= capacity) {
+            return;
+        }
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        int[] newElements = new int[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+        logger.debug("oldCapacity:{} 扩容为 newCapacity:{}", oldCapacity ,newCapacity);
+    }
+
 
     /**
      * 删除index位置的元素
