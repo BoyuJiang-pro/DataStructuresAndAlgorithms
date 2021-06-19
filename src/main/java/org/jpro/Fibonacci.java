@@ -35,11 +35,4 @@ public class Fibonacci {
         }
         return second;
     }
-
-    public static void main(String[] args) {
-        int n = 5000;
-//        TimeTools.check("fib", () -> System.out.println(fib(n)));
-        TimeTools.check("fib2", () -> System.out.println(fib2 (n)));
-    }
-
 }
